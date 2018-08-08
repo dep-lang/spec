@@ -13,7 +13,7 @@ This is the core principle of Dep:
 
 You can specify a [precondition](https://en.wikipedia.org/wiki/Precondition) and [postcondition](https://en.wikipedia.org/wiki/Postcondition) in the method signature itself! Start with this function:
 
-```rust
+```dep
 fn sum(i32 left, i32 right) -> i32 {
   return left + right;
 }
@@ -21,7 +21,7 @@ fn sum(i32 left, i32 right) -> i32 {
 
 We can define what about the result will always be true (AKA the postcondition). This is just a change to the method signature by adding a "property" to the return value. See that `: Sum(a,b)` after the return type? In this case, `Sum(a,b)` is a built-in property that means that this value (the one being returned) must be equivalent to the sum of its two arguments 
 
-```rust
+```dep
 fn sum(i32 a, i32 b) -> i32 : Sum(a,b) {
 //                          ^^^^^^^^^^
   return a + b;
@@ -32,7 +32,7 @@ fn sum(i32 a, i32 b) -> i32 : Sum(a,b) {
 
 In Dep, the colon has one, and only one, meaning: 
 
-```quote
+```dep
 The properties after the colon describe the variable before the colon
 ```
 
@@ -40,7 +40,7 @@ The properties after the colon describe the variable before the colon
 
 That's trivial, let's try something a little more interesting. Scaling by a random number > 1
 
-```rust
+```dep
 fn scaleUpRand(i32 in) -> i32 {
   return in * rand(2, 100);
 }
@@ -48,7 +48,7 @@ fn scaleUpRand(i32 in) -> i32 {
 
 Let's say we want to know that our number increased as a result of this operation
 
-```rust
+```dep
 prop Bigger(i32 self, i32 other) {
   self > other
 }
@@ -56,7 +56,7 @@ prop Bigger(i32 self, i32 other) {
 
 Now we can embed this property into our method signature like before
 
-```rust
+```dep
 fn scaleUpRand(i32 in) -> i32 : Bigger(in) {
   return in * rand(2, 100);
 }
@@ -70,7 +70,7 @@ You may also be saying, "Wait, I thought Bigger takes two arguments, you only ga
 
 Properties can also be applied to normal variable decalarations
 
-```rust
+```dep
 int mut i = 5;
 int mut j : Bigger(i) = 10;
 //^^ OK
@@ -86,7 +86,7 @@ Note that the property doesn't just have to hold true initially, it must always 
 
 Variables can have as many properties as you want. When defining multiple properties, put a `+` between the properties
 
-```rust
+```dep
 int i : Bigger(5) + Not(10) = 7;
 ```
 
@@ -98,7 +98,7 @@ You've heard of `println` debugging, where you print out values at certain point
 
 However, in Dep because properties must work together, it's also important to test your understanding of the compile-time guarantees that the compiler can infer. By putting a property after the pound symbol, the compile will tell you whether that property holds. This is essentially compile-time assertions
 
-```rust
+```dep
 int i = 5;
 # i > 0
 int my_rand = rand(100) * 2;
@@ -117,7 +117,7 @@ Or not, I'm still getting to that part of the compiler. It defintely helps the h
 
 Let's write quicksort. Just by compiling in Dep, it will be proven that this function is a correct implementation of a sorting function. We do this by creating a contract in the function
 
-```rust
+```dep
 fn q_sort(Vec<int> src) -> Vec<int> : Sorted + Reorder(src) { ... }
 ```
 
@@ -133,7 +133,7 @@ There are two properties of the return type, `Sorted` and `Reorder(in)`
 
 The Sorted property's definition looks like so
 
-```rust
+```dep
 prop Sorted(Vec<int> self) {
   forall (e,f) in self.AdjPair(): e < f
 }
@@ -158,32 +158,30 @@ This is important because we need to know that the function doesn't discard any 
 In case you don't know how quicksort works or forgot, here's a quick refresher. Note this is not the in-place quicksort, so it will allocate more memory. *However*, in-place quicksort is entirely possible and proveable in Dep, we may revisit it later to show properties that work on systems-style applications
 
 The pseudocode for Quicksort goes like
-```
-fn quicksort(src) -> out {
+```python
+def quicksort(src):
   # Base case: one or zero element array is already sorted
-  if (src.len < 2) 
+  if (src.len < 2):
     return src
   pivot = random element from src
   left = new array
   right = new array
   # Split the input into values less than pivot and greater than pivot
-  foreach curr in src {
-    if (curr < pivot)
+  for curr in src:
+    if (curr < pivot):
       left.push(curr)
-    else
+    else:
       right.push(curr)
-  }
   # Sort each half recursively
   left = quicksort(left)
   right = quicksort(right)
   # Since left & right are sorted, put right on the end of left
   return left.push(right)
-}
 ```
 
 The Dep version will look like this:
 
-```rust
+```dep
 fn q_sort(Vec src) -> Vec : Sorted + Reorder(src) {
   if (src.len < 2)
     return src;
@@ -212,13 +210,13 @@ In the next section we will talk about some of these
 
 These properties stand for "less than" and "greater than or equal to" respectively. The compiler automatically infers these properties to verify the postcondition.
 
-```rust
+```dep
 fn Lt(Vec self, int ceil) {
   forall e in self: e < ceil
 }
 ```
 
-```rust
+```dep
 fn Geq(Vec self, int floor) {
   forall e in self: e >= floor
 }
@@ -228,7 +226,7 @@ These properties can be applied to prove that all the elements are less than or 
 
 In the for loop we can verify these properties as the loop invariant
 
-```rust
+```dep
 for (int curr in src) { # left : Lt(pivot) && right : Geq(pivot)
     if (curr < pivot) 
         left.push(curr);

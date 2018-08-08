@@ -22,7 +22,7 @@ Primitives all lowercase, but all user defined types including standard library 
 
 Variables are immutable by default in Dep. To make them mutable, add the `mut` keyword
 
-```rust
+```dep
 Vec my_vec = Vec.new();
 //my_vec.push(5);
 //BAD: my_vec is immutable, push requires a mutable Vec
@@ -33,7 +33,7 @@ my_mut_vec.push(5);
 
 ## Functions
 
-```rust
+```dep
 fn sum(int i, int j) -> int {
   return i + j;
 }
