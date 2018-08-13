@@ -10,6 +10,10 @@
 
 - [Property Functions](property_functions.md)
 
+- [Halting](halting.md)
+
+  - [Recursion Base Case](recursion_base_case.md)
+
 - [Memory Management](memory_management.md)
 
 [Pre-Dep vs Dep](predep_vs_dep.md)
