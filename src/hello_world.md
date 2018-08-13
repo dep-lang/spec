@@ -6,12 +6,12 @@ fn main() {
 }
 ```
 
- * The program always starts in a function named `main`
+ * `fn` starts a function
  
- * `fn` means that a function is going to be defined here
+ * Program execution begins in a function named `main`
  
  * Curly braces around the function body
  
- * Lines end in a semicolon (`;`)
- 
-Note: the `println!()` function is a macro, which is why it ends with a `!`
+ * Lines end in semicolon `;`
+
+Aside: The `println!()` function is a macro, which is why it ends with a `!`

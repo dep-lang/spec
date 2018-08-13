@@ -10,6 +10,7 @@ hljs.registerLanguage("dep",function(e){
         l:e.IR+"!?",
         i:"</",
         c:  [e.CLCM,
+            e.HCM,
             e.C("/\\*","\\*/",{c:["self"]}),
             e.HCM,
             e.inherit(e.QSM,{b:/b?"/,i:null}),
