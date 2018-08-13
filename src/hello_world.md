@@ -7,5 +7,11 @@ fn main() {
 ```
 
  * `fn` starts a function
- * Curly braces around the function body (C/Java style)
- * The `println!()` function is a macro, which is why it ends with a `!`
+ 
+ * Program execution begins in a function named `main`
+ 
+ * Curly braces around the function body
+ 
+ * Lines end in semicolon `;`
+
+Aside: The `println!()` function is a macro, which is why it ends with a `!`
