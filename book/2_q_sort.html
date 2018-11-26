@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Quicksort Example - The Dep Programming Language</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Intro</a></li><li><a href="basic_syntax.html"><strong aria-hidden="true">1.</strong> Basic Syntax</a></li><li><ol class="section"><li><a href="hello_world.html"><strong aria-hidden="true">1.1.</strong> Hello World</a></li><li><a href="1_variables.html"><strong aria-hidden="true">1.2.</strong> Variables</a></li><li><a href="1_mutability.html"><strong aria-hidden="true">1.3.</strong> Mutability</a></li><li><a href="1_functions.html"><strong aria-hidden="true">1.4.</strong> Functions</a></li></ol></li><li><a href="properties.html"><strong aria-hidden="true">2.</strong> Properties in Dep</a></li><li><ol class="section"><li><a href="2_colon.html"><strong aria-hidden="true">2.1.</strong> The Colon Operator</a></li><li><a href="2_function_contracts.html"><strong aria-hidden="true">2.2.</strong> Function Contracts</a></li><li><a href="2_local_variables.html"><strong aria-hidden="true">2.3.</strong> Local Variables with Properties</a></li><li><a href="2_making_properties.html"><strong aria-hidden="true">2.4.</strong> Making Our Own Properties</a></li><li><a href="2_ctassert.html"><strong aria-hidden="true">2.5.</strong> Compile Time Asserts</a></li><li><a href="2_std_props.html"><strong aria-hidden="true">2.6.</strong> Standrad Library Properties</a></li><li><a href="2_q_sort.html" class="active"><strong aria-hidden="true">2.7.</strong> Quicksort Example</a></li></ol></li><li><a href="property_functions.html"><strong aria-hidden="true">3.</strong> Property Functions</a></li><li><a href="halting.html"><strong aria-hidden="true">4.</strong> Halting</a></li><li><ol class="section"><li><a href="recursion_base_case.html"><strong aria-hidden="true">4.1.</strong> Recursion Base Case</a></li></ol></li><li><a href="memory_management.html"><strong aria-hidden="true">5.</strong> Memory Management</a></li><li><ol class="section"><li><a href="owned_types.html"><strong aria-hidden="true">5.1.</strong> Owned Types</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">The Dep Programming Language</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#quicksort-example" id="quicksort-example"><h1>Quicksort Example</h1></a>
+<p>Let's write quicksort. Just by compiling in Dep, it will be proven that this function is a correct implementation of a sorting function. We do this by creating a contract in the function</p>
+<pre><code class="language-dep">fn q_sort(Vec&lt;int&gt; src) -&gt; Vec&lt;int&gt; : Sorted + Reorder(src) { ... }
+</code></pre>
+<p>Let's break down just the method signature.</p>
+<p>First, it takes in a vector (resizing array) of ints and returns a vector of ints.</p>
+<p>Next, after the return type we see the colon, signaling a list of properties about the return.</p>
+<p>There are two properties of the return type, <code>Sorted</code> and <code>Reorder(in)</code></p>
+<a class="header" href="#quicksort-implementation" id="quicksort-implementation"><h2>Quicksort Implementation</h2></a>
+<p>In case you don't know how quicksort works or forgot, here's a quick refresher. Note this is not the in-place quicksort, so it will allocate more memory. <em>However</em>, in-place quicksort is entirely possible and proveable in Dep, we may revisit it later to show properties that work on systems-style applications</p>
+<p>The pseudocode for Quicksort goes like</p>
+<pre><code class="language-python">def quicksort(src):
+  # Base case: one or zero element array is already sorted
+  if (src.len &lt; 2):
+    return src
+  pivot = median of several random elements in src
+  left = new array
+  right = new array
+  # Split the input into values less than pivot and greater than pivot
+  for curr in src:
+    if (curr &lt; pivot):
+      left.push(curr)
+    else:
+      right.push(curr)
+  # Sort each half recursively
+  left = quicksort(left)
+  right = quicksort(right)
+  # Since left &amp; right are sorted, put right on the end of left
+  return left.push(right)
+</code></pre>
+<p>The Dep version will look like this:</p>
+<pre><code class="language-dep">fn q_sort(Vec src) -&gt; Vec : Sorted + Reorder(src) {
+  if (src.len &lt; 2)
+    return src;
+  int pivot = src.getRandMedian();
+  Vec mut left = Vec.new();
+  Vec mut right = Vec.new();
+  for (int curr in src) {
+    if (curr &lt; pivot) 
+      left.push(curr);
+    else 
+      right.push(curr);
+  }
+  left = q_sort(left);
+  right = q_sort(right);
+  return left.push(right);
+}
+</code></pre>
+<p>The great thing is that this looks almost exactly like our pseudocode! The only difference was the properties of the return value which we discussed earlier. Despite the fact that we just translated our pseudocode, this is all proven correct at compile-time!</p>
+<p>This is all thanks to the property definitions of the standard library which accounts for <code>Vec</code> and <code>Vec.push</code> as well as several other implicit properties which the compiler can compose together to get our return value's properties</p>
+<p>In the next section we will talk about some of these</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="2_std_props.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="property_functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="2_std_props.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="property_functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
