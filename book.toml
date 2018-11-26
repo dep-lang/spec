@@ -4,8 +4,5 @@ multilingual = false
 src = "src"
 title = "The Dep Programming Language"
 
-[build]
-build-dir = "../dep-lang.github.io/spec"
-
 [output.html]
 theme = "src/theme"
