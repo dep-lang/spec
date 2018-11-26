@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Halting - The Dep Programming Language</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Intro</a></li><li><a href="basic_syntax.html"><strong aria-hidden="true">1.</strong> Basic Syntax</a></li><li><ol class="section"><li><a href="hello_world.html"><strong aria-hidden="true">1.1.</strong> Hello World</a></li><li><a href="1_variables.html"><strong aria-hidden="true">1.2.</strong> Variables</a></li><li><a href="1_mutability.html"><strong aria-hidden="true">1.3.</strong> Mutability</a></li><li><a href="1_functions.html"><strong aria-hidden="true">1.4.</strong> Functions</a></li></ol></li><li><a href="properties.html"><strong aria-hidden="true">2.</strong> Properties in Dep</a></li><li><ol class="section"><li><a href="2_colon.html"><strong aria-hidden="true">2.1.</strong> The Colon Operator</a></li><li><a href="2_function_contracts.html"><strong aria-hidden="true">2.2.</strong> Function Contracts</a></li><li><a href="2_local_variables.html"><strong aria-hidden="true">2.3.</strong> Local Variables with Properties</a></li><li><a href="2_making_properties.html"><strong aria-hidden="true">2.4.</strong> Making Our Own Properties</a></li><li><a href="2_ctassert.html"><strong aria-hidden="true">2.5.</strong> Compile Time Asserts</a></li><li><a href="2_std_props.html"><strong aria-hidden="true">2.6.</strong> Standrad Library Properties</a></li><li><a href="2_q_sort.html"><strong aria-hidden="true">2.7.</strong> Quicksort Example</a></li></ol></li><li><a href="property_functions.html"><strong aria-hidden="true">3.</strong> Property Functions</a></li><li><a href="halting.html" class="active"><strong aria-hidden="true">4.</strong> Halting</a></li><li><ol class="section"><li><a href="recursion_base_case.html"><strong aria-hidden="true">4.1.</strong> Recursion Base Case</a></li></ol></li><li><a href="memory_management.html"><strong aria-hidden="true">5.</strong> Memory Management</a></li><li><ol class="section"><li><a href="owned_types.html"><strong aria-hidden="true">5.1.</strong> Owned Types</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">The Dep Programming Language</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#halting" id="halting"><h1>Halting</h1></a>
+<a class="header" href="#the-halting-problem" id="the-halting-problem"><h2>The Halting Problem</h2></a>
+<p>Those of you who are aware of the famous halting problem, will find it suspicious that there is a section on halting in Dep.</p>
+<p>As a short, and by no means comprehensive introduction to the halting problem, it essentially proves the following.</p>
+<blockquote>
+<p>For any nontrivial runtime property of a program, there <em>cannot exist</em> a program that can always prove whether this holds true or not.</p>
+</blockquote>
+<blockquote>
+<p>The main example of this theorem, which acts as its namesake, is whether a program will halt or run in an infinite loop.</p>
+</blockquote>
+<p>The explanation for how this theorem works is nontrivial, but it means that Dep cannot always tell whether a function will halt or not.</p>
+<a class="header" href="#the-catch" id="the-catch"><h2>The Catch</h2></a>
+<p>It <em>can</em> however, prove that some functions will always halt.</p>
+<p>This is very useful for proving the correctness of your programs because Hoare logic, which the Dep compiler uses to prove the programs correctness, actually only proves the so-called &quot;partial correctness&quot; of the program.</p>
+<p>Meaning, that Dep can prove that your program meets your specification, assuming that it halts.</p>
+<a class="header" href="#the-fn-halt-keyword" id="the-fn-halt-keyword"><h2>The <code>fn halt</code> Keyword</h2></a>
+<p>When you declare a function with <code>fn halt</code> instead of the traditional <code>fn</code>, you are saying</p>
+<blockquote>
+<p>This function will always halt, and for it to compile, the compiler must be able to prove this is true.</p>
+</blockquote>
+<p>This means that all of the function calls inside of <code>fn halt</code> functions must also be declared with <code>fn halt</code></p>
+<p>Additionally, any loops must be provably finite in iteration.</p>
+<a class="header" href="#recursion" id="recursion"><h2>Recursion</h2></a>
+<p>It would be quite unfortunate for you to write a recursive function which meets your specification, but that never halts because the base case was written incorrectly.</p>
+<p>This is precisely why Dep has built-in facilities to prevent infinite recursion, which we will explore in the next section.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="property_functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="recursion_base_case.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="property_functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="recursion_base_case.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
